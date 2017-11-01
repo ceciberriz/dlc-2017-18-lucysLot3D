@@ -8,7 +8,6 @@ public class Grid : MonoBehaviour {
 	public LayerMask unwalkableMask;
 	public Vector2 gridSize;
 	public float nodeRadius;
-	public Transform player;
 
 	float nodeDiameter;
 	int gridSizeX, gridSizeY;
@@ -30,7 +29,7 @@ public class Grid : MonoBehaviour {
 				Vector3 worldPos = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
 				//check whether there is collision with mask
 				bool walkable = !(Physics.CheckSphere(worldPos, nodeRadius, unwalkableMask));
-				grid [x, y] = new Node (walkable, worldPos);
+				grid [x, y] = new Node (walkable, worldPos, x, y);
 			}
 		}
 	}
@@ -46,20 +45,21 @@ public class Grid : MonoBehaviour {
 		return grid[x,y];
 	}
 
+	public List<Node> getNodeNeighbors(Node node) {
+		List<Node> list;
+
+
+		return list;
+	}
+
 	void OnDrawGizmos() {
-		Gizmos.DrawWireCube(transform.position, new Vector3(gridSizeX, 1, gridSizeY));
-		//Gizmos.DrawCube(worldBottomLeft, Vector3.one * (nodeDiameter-.1f));
-	
+		Gizmos.DrawWireCube (transform.position, new Vector3 (gridSizeX, 1, gridSizeY));
 		if (grid != null) {
 			foreach (Node n in grid) {
 				Gizmos.color = (n.walkable) ? Color.white : Color.red;
-				Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter-.1f));
+				Gizmos.DrawCube (n.worldPosition, Vector3.one * (nodeDiameter - .1f));
 
 			}
 		}
-		Gizmos.color = Color.blue;
-		Node position = NodeFromWorldPoint (player.position);
-		Gizmos.DrawCube(position.worldPosition, Vector3.one * (nodeDiameter-.1f));
 	}
-		
 }
