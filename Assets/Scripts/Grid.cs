@@ -8,6 +8,7 @@ public class Grid : MonoBehaviour {
 	public LayerMask unwalkableMask;
 	public Vector2 gridSize;
 	public float nodeRadius;
+	public Transform player;
 
 	float nodeDiameter;
 	int gridSizeX, gridSizeY;
@@ -24,13 +25,6 @@ public class Grid : MonoBehaviour {
 		grid = new Node[gridSizeX, gridSizeY];
 		worldBottomLeft = transform.position - Vector3.right * gridSize.x / 2.0f - Vector3.forward * gridSize.y / 2.0f;
 
-		//debug
-		Debug.Log (Vector3.right * gridSize.x / 2.0f);
-		Debug.Log (Vector3.up * gridSize.y / 2.0f);
-		Debug.Log (transform.position);
-		Debug.Log ("here");
-		Debug.Log (worldBottomLeft);
-
 		for (int x = 0; x < gridSizeX; x++) {
 			for (int y = 0; y < gridSizeY; y++) {
 				Vector3 worldPos = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
@@ -41,10 +35,21 @@ public class Grid : MonoBehaviour {
 		}
 	}
 
+	public Node NodeFromWorldPoint(Vector3 worldPosition) {
+		float percentageX = (worldPosition.x + gridSize.x/2.0f)/gridSize.x;
+		float percentageY = (worldPosition.z + gridSize.y/2.0f)/gridSize.y;
+		percentageX = Mathf.Clamp01 (percentageX);
+		percentageY = Mathf.Clamp01 (percentageY);
+
+		int x = Mathf.RoundToInt((gridSizeX -1) * percentageX);
+		int y = Mathf.RoundToInt((gridSizeY -1) * percentageY);
+		return grid[x,y];
+	}
+
 	void OnDrawGizmos() {
 		Gizmos.DrawWireCube(transform.position, new Vector3(gridSizeX, 1, gridSizeY));
 		//Gizmos.DrawCube(worldBottomLeft, Vector3.one * (nodeDiameter-.1f));
-
+	
 		if (grid != null) {
 			foreach (Node n in grid) {
 				Gizmos.color = (n.walkable) ? Color.white : Color.red;
@@ -52,5 +57,9 @@ public class Grid : MonoBehaviour {
 
 			}
 		}
+		Gizmos.color = Color.blue;
+		Node position = NodeFromWorldPoint (player.position);
+		Gizmos.DrawCube(position.worldPosition, Vector3.one * (nodeDiameter-.1f));
 	}
+		
 }
