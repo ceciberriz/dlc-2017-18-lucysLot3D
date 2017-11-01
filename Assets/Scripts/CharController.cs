@@ -13,7 +13,7 @@ public class CharController : MonoBehaviour {
 	Vector3 targetPosition;
 	Vector3 lookAtTarget;
 	Quaternion playerRot;
-	float rotSpeed = 5f;
+	float rotSpeed = 4f;
 	bool moving = false;
 	float distanceFromMouse;
 
@@ -36,7 +36,7 @@ public class CharController : MonoBehaviour {
 		}
 	
 		//move until you reach mouse point
-		if (moving & (distanceFromMouse >= 2f)) {
+		if (moving) {// & (distanceFromMouse >= 2f)) {
 			MoveToMouse ();
 		}
 	}
