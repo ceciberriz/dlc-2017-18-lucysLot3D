@@ -46,10 +46,25 @@ public class Grid : MonoBehaviour {
 	}
 
 	public List<Node> getNodeNeighbors(Node node) {
-		List<Node> list;
+		List<Node> neighbors = new List<Node>();
 
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				if (x == 0 && y == 0) 
+					continue;
+				
+				int checkX = node.gridX + x; 
+				int checkY = node.gridY + y;
 
-		return list;
+				//check if they are inside the grid
+				//gradSizex : size of array
+				if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY) {
+					neighbors.Add (grid [checkX, checkY]);
+				}
+			}
+		}
+
+		return neighbors;
 	}
 
 	void OnDrawGizmos() {

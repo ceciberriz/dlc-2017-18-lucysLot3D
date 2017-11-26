@@ -21,20 +21,26 @@ public class PathFinder : MonoBehaviour {
 
 		while (openSet.Count > 0) {
 			Node currentNode = openSet[0];
-			for (int i = 0; openSet.Count; i++) {
-				if (openSet [i].fCost < currentNode.fCost || openSet [i].fCost == currentNode.fCost && openSet [i].hCost < currentNode.hCost) {
+			for (int i = 1; openSet.Count; i++) {
+				if (openSet [i].fCost < currentNode.fCost || (openSet [i].fCost == currentNode.fCost && openSet [i].hCost < currentNode.hCost)) {
 					currentNode = openSet [i];
 				}
 			}
 
 			openSet.Remove (currentNode);
-			closedSet.Remove (currentNode);
+			closedSet.Add (currentNode);
 
 			if (currentNode == targetNode) {
 				return;
 			}
 
-
+			foreach (Node neighbour in grid.getNodeNeighbors(currentNode) {
+				//loop through neighbors and check whether the neighbor is not wakable 
+				// or is in closed list.
+				if (!neighbour.walkable || closedSet.Contains(neighbour)) {
+					continue;
+				}
+			}
 		}
 	}
 }
